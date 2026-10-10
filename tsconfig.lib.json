@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist-lib/types"
+  },
+  "include": ["src/index.ts", "src/styles.d.ts", "src/components/**/*.tsx", "src/providers/**/*.tsx", "src/theme/**/*.ts"]
+}

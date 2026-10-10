@@ -1,0 +1,41 @@
+{
+  "name": "@shenghong/design-system",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist-lib/shenghong-design-system.cjs",
+  "module": "./dist-lib/shenghong-design-system.js",
+  "types": "./dist-lib/types/index.d.ts",
+  "files": [
+    "dist-lib"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist-lib/types/index.d.ts",
+      "import": "./dist-lib/shenghong-design-system.js",
+      "require": "./dist-lib/shenghong-design-system.cjs"
+    },
+    "./style.css": "./dist-lib/style.css"
+  },
+  "scripts": {
+    "dev": "vite --open /.vite/index.html",
+    "build": "tsc --noEmit && vite build",
+    "build:single": "npm run build",
+    "watch:single": "vite build --watch",
+    "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ant-design/x": "^2.9.0",
+    "antd": "6.6.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "@vitejs/plugin-react": "6.1.1",
+    "typescript": "7.0.2",
+    "vite": "8.2.2"
+  }
+}

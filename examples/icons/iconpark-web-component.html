@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IconPark Web Component 预览</title>
+    <script
+      id="iconpark-bundle"
+      src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_44520_101.83d5a3bc5c3aecb78b2b295470525496.js"
+      defer
+    ></script>
+    <style>
+      :root {
+        color: rgba(0, 0, 0, 0.88);
+        background: #f5f5f5;
+        font-family:
+          Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Microsoft YaHei", sans-serif;
+        font-synthesis: none;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      .page-shell {
+        width: min(1440px, 100%);
+        margin: 0 auto;
+        padding: 32px 24px 64px;
+      }
+
+      .page-header {
+        display: flex;
+        gap: 24px;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        line-height: 1.3;
+      }
+
+      .description,
+      .status {
+        margin: 0;
+        color: rgba(0, 0, 0, 0.56);
+        font-size: 14px;
+      }
+
+      .token-source {
+        color: var(--brand-primary, #6495f6);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          monospace;
+      }
+
+      .status[data-kind="error"] {
+        color: #d4380d;
+      }
+
+      .toolbar {
+        position: sticky;
+        z-index: 10;
+        top: 0;
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) auto auto;
+        gap: 16px;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 16px;
+        border: 1px solid #e8e8e8;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        backdrop-filter: blur(12px);
+      }
+
+      .search-input {
+        width: 100%;
+        height: 40px;
+        padding: 0 12px;
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        outline: none;
+      }
+
+      .search-input:focus {
+        border-color: var(--brand-primary, #6495f6);
+        box-shadow: 0 0 0 3px
+          color-mix(in srgb, var(--brand-primary, #6495f6) 16%, transparent);
+      }
+
+      .control {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        color: rgba(0, 0, 0, 0.64);
+        font-size: 14px;
+        white-space: nowrap;
+      }
+
+      .control input[type="range"] {
+        width: 120px;
+        accent-color: var(--brand-primary, #6495f6);
+      }
+
+      .control input[type="color"] {
+        width: 40px;
+        height: 40px;
+        padding: 3px;
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .control select {
+        height: 40px;
+        min-width: 190px;
+        padding: 0 32px 0 10px;
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        background: #fff;
+        color: rgba(0, 0, 0, 0.88);
+        cursor: pointer;
+      }
+
+      .icon-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 12px;
+      }
+
+      .icon-card {
+        display: grid;
+        min-height: 150px;
+        padding: 20px 14px 14px;
+        border: 1px solid #e8e8e8;
+        border-radius: 12px;
+        background: #fff;
+        place-items: center;
+        transition:
+          border-color 160ms ease,
+          box-shadow 160ms ease,
+          transform 160ms ease;
+      }
+
+      .icon-card:hover {
+        border-color: var(--brand-primary, #6495f6);
+        box-shadow: 0 8px 24px rgba(52, 92, 169, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .icon-card iconpark-icon {
+        color: var(--preview-color);
+      }
+
+      .icon-name {
+        width: 100%;
+        margin-top: 18px;
+        overflow: hidden;
+        color: rgba(0, 0, 0, 0.72);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          monospace;
+        font-size: 12px;
+        line-height: 1.5;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .empty-state {
+        grid-column: 1 / -1;
+        padding: 72px 24px;
+        color: rgba(0, 0, 0, 0.45);
+        text-align: center;
+      }
+
+      @media (max-width: 720px) {
+        .page-header {
+          display: block;
+        }
+
+        .status {
+          margin-top: 12px;
+        }
+
+        .toolbar {
+          grid-template-columns: 1fr;
+        }
+
+        .control {
+          justify-content: space-between;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="page-header">
+        <div>
+          <h1>IconPark Web Component 预览</h1>
+          <p class="description">
+            图标由 IconPark CDN 脚本注册；颜色下拉包含
+            <span class="token-source" id="color-token-count">0</span>
+            个规范色，<span id="color-token-source"></span>。
+          </p>
+        </div>
+        <p class="status" id="status">正在加载 IconPark 代码…</p>
+      </header>
+
+      <section class="toolbar" aria-label="图标预览控件">
+        <input
+          class="search-input"
+          id="search"
+          type="search"
+          placeholder="搜索图标名称，例如 tongyong-sousuo"
+          autocomplete="off"
+        />
+
+        <label class="control">
+          <span>尺寸：<strong id="size-value">32</strong>px</span>
+          <input id="size" type="range" min="12" max="64" value="32" />
+        </label>
+
+        <label class="control">
+          <span>颜色</span>
+          <select id="color-token" aria-label="选择颜色规范 Token"></select>
+          <input
+            id="color"
+            type="color"
+            value="#6495f6"
+            title="自定义颜色"
+            aria-label="自定义颜色"
+          />
+        </label>
+      </section>
+
+      <section class="icon-grid" id="icon-grid" aria-live="polite"></section>
+    </main>
+
+    <script>
+      // file:// 无法导入 TypeScript；该快照与 src/theme/colors.ts 保持一致。
+      const fallbackColorTokens = {
+        colorPrimaryBg: '#F0F7FF',
+        colorPrimaryBgHover: '#0000000D',
+        colorPrimaryBorder: '#E3EFFF',
+        colorPrimaryBorderHover: '#BAD6FF',
+        colorPrimaryHover: '#91BAFF',
+        colorPrimaryBase: '#6495F6',
+        colorPrimaryActive: '#4A72CF',
+        colorPrimaryTextHover: '#91BAFF',
+        colorPrimaryText: '#6495F6',
+        colorPrimaryTextActive: '#4A72CF',
+        colorSuccessBg: '#f6ffed',
+        colorSuccessBgHover: '#d9f7be',
+        colorSuccessBorder: '#b7eb8f',
+        colorSuccessBorderHover: '#95de64',
+        colorSuccessHover: '#73d13d',
+        colorSuccessBase: '#52c41a',
+        colorSuccessActive: '#389e0d',
+        colorSuccessTextHover: '#237804',
+        colorSuccessText: '#135200',
+        colorSuccessTextActive: '#092b00',
+        colorWarningBg: '#fffbe6',
+        colorWarningBgHover: '#fff1b8',
+        colorWarningBorder: '#ffe58f',
+        colorWarningBorderHover: '#ffd666',
+        colorWarningHover: '#ffc53d',
+        colorWarningBase: '#faad14',
+        colorWarningActive: '#d48806',
+        colorWarningTextHover: '#ad6800',
+        colorWarningText: '#874d00',
+        colorWarningTextActive: '#613400',
+        colorErrorBg: '#fff1f0',
+        colorErrorBgHover: '#ffccc7',
+        colorErrorBorder: '#ffa39e',
+        colorErrorBorderHover: '#ff7875',
+        colorErrorHover: '#ff7875',
+        colorErrorBase: '#ff4d4f',
+        colorErrorActive: '#cf1322',
+        colorErrorTextHover: '#a8071a',
+        colorErrorText: '#820014',
+        colorErrorTextActive: '#5c0011',
+        colorInfoBg: '#e6f4ff',
+        colorInfoBgHover: '#bae0ff',
+        colorInfoBorder: '#91caff',
+        colorInfoBorderHover: '#69b1ff',
+        colorInfoHover: '#4096ff',
+        colorInfoBase: '#1677ff',
+        colorInfoActive: '#0958d9',
+        colorInfoTextHover: '#003eb3',
+        colorInfoText: '#002c8c',
+        colorInfoTextActive: '#001d66',
+        colorText: '#000000e0',
+        colorTextHeading: '#000000e0',
+        colorTextDescription: '#00000073',
+        colorTextPlaceholder: '#00000040',
+        colorTextDisabled: '#00000040',
+        colorIcon: '#00000073',
+        colorIconHover: '#000000e0',
+        colorBgContainer: '#ffffff',
+        colorBgContainerDisabled: '#0000000a',
+        colorBgLayout: '#f5f5f5',
+        colorBgElevated: '#ffffff',
+        controlItemBgHover: '#0000000a',
+        controlItemBgActive: '#e6f4ff',
+        controlItemBgActiveHover: '#bae0ff',
+        colorBorder: '#00000026',
+        colorBorderSecondary: '#0000000f',
+        colorSplit: '#0000000f',
+      };
+      const grid = document.querySelector('#icon-grid');
+      const status = document.querySelector('#status');
+      const searchInput = document.querySelector('#search');
+      const sizeInput = document.querySelector('#size');
+      const sizeValue = document.querySelector('#size-value');
+      const colorInput = document.querySelector('#color');
+      const colorTokenSelect = document.querySelector('#color-token');
+      const colorTokenCount = document.querySelector('#color-token-count');
+      const colorTokenSource = document.querySelector('#color-token-source');
+      const bundleScript = document.querySelector('#iconpark-bundle');
+
+      function normalizeHexColor(value) {
+        if (/^#[0-9a-f]{6}(?:[0-9a-f]{2})?$/i.test(value)) {
+          return value.toUpperCase();
+        }
+
+        if (/^#[0-9a-f]{3}$/i.test(value)) {
+          return (
+            '#' +
+            [...value.slice(1)]
+              .map((character) => character.repeat(2))
+              .join('')
+          ).toUpperCase();
+        }
+
+        return null;
+      }
+
+      function collectColorTokens(value, path = [], result = []) {
+        for (const [key, childValue] of Object.entries(value)) {
+          const tokenPath = [...path, key];
+          if (typeof childValue === 'string') {
+            const color = normalizeHexColor(childValue);
+            if (color) {
+              result.push({ name: tokenPath.join('.'), value: color });
+            }
+          } else if (childValue && typeof childValue === 'object') {
+            collectColorTokens(childValue, tokenPath, result);
+          }
+        }
+
+        return result;
+      }
+
+      function applyColorTokens(tokens) {
+        const colorTokens = collectColorTokens(tokens);
+        const primaryToken =
+          colorTokens.find((token) => token.name === 'colorPrimaryBase') ??
+          colorTokens[0];
+
+        colorTokenSelect.replaceChildren();
+
+        const groupDefinitions = [
+          ['Primary', (name) => name.startsWith('colorPrimary')],
+          ['Success', (name) => name.startsWith('colorSuccess')],
+          ['Warning', (name) => name.startsWith('colorWarning')],
+          ['Error', (name) => name.startsWith('colorError')],
+          ['Info', (name) => name.startsWith('colorInfo')],
+          [
+            'Text & icons',
+            (name) =>
+              name.startsWith('colorText') || name.startsWith('colorIcon'),
+          ],
+          [
+            'Backgrounds',
+            (name) =>
+              name.startsWith('colorBg') || name.startsWith('controlItemBg'),
+          ],
+          [
+            'Borders & dividers',
+            (name) =>
+              name.startsWith('colorBorder') || name === 'colorSplit',
+          ],
+        ];
+
+        const optionGroups = new Map();
+        for (const [label] of groupDefinitions) {
+          const group = document.createElement('optgroup');
+          group.label = label;
+          optionGroups.set(label, group);
+          colorTokenSelect.append(group);
+        }
+
+        for (const token of colorTokens) {
+          const option = document.createElement('option');
+          option.value = token.name;
+          option.dataset.color = token.value;
+          option.textContent = `${token.name} · ${token.value}`;
+          const groupLabel =
+            groupDefinitions.find(([, matches]) => matches(token.name))?.[0] ??
+            'Backgrounds';
+          optionGroups.get(groupLabel).append(option);
+        }
+
+        const customOption = document.createElement('option');
+        customOption.value = '__custom__';
+        customOption.textContent = '自定义颜色';
+        colorTokenSelect.append(customOption);
+
+        colorTokenCount.textContent = String(colorTokens.length);
+
+        if (primaryToken) {
+          document.documentElement.style.setProperty(
+            '--brand-primary',
+            primaryToken.value,
+          );
+          previewColor = primaryToken.value;
+          colorTokenSelect.value = primaryToken.name;
+          colorInput.value = primaryToken.value.slice(0, 7);
+        }
+      }
+
+      let previewColor = '#6495F6';
+      let iconNames = [];
+
+      applyColorTokens(fallbackColorTokens);
+
+      function getRegisteredIconNames() {
+        return Object.keys(window.__iconpark__ ?? {})
+          .filter((name) => !/^\d+$/.test(name))
+          .sort((a, b) => a.localeCompare(b));
+      }
+
+      function renderIcons() {
+        const keyword = searchInput.value.trim().toLowerCase();
+        const filteredNames = iconNames.filter((name) =>
+          name.toLowerCase().includes(keyword),
+        );
+
+        grid.replaceChildren();
+        document.documentElement.style.setProperty(
+          '--preview-color',
+          previewColor,
+        );
+
+        if (filteredNames.length === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'empty-state';
+          empty.textContent = keyword
+            ? '没有找到匹配的图标'
+            : '未从 IconPark 代码中读取到图标';
+          grid.append(empty);
+        } else {
+          const fragment = document.createDocumentFragment();
+
+          for (const name of filteredNames) {
+            const card = document.createElement('article');
+            card.className = 'icon-card';
+            card.title = `<iconpark-icon name="${name}"></iconpark-icon>`;
+
+            const icon = document.createElement('iconpark-icon');
+            icon.setAttribute('name', name);
+            icon.setAttribute('size', sizeInput.value);
+            icon.setAttribute('color', previewColor);
+            icon.setAttribute('aria-hidden', 'true');
+
+            const label = document.createElement('div');
+            label.className = 'icon-name';
+            label.textContent = name;
+
+            card.append(icon, label);
+            fragment.append(card);
+          }
+
+          grid.append(fragment);
+        }
+
+        status.dataset.kind = 'success';
+        status.textContent = `已显示 ${filteredNames.length} / ${iconNames.length} 个图标`;
+      }
+
+      async function initializePreview() {
+        try {
+          await customElements.whenDefined('iconpark-icon');
+          iconNames = getRegisteredIconNames();
+          renderIcons();
+        } catch (error) {
+          showLoadError();
+        }
+      }
+
+      async function synchronizeColorTokens() {
+        if (window.location.protocol === 'file:') {
+          colorTokenSource.textContent =
+            '双击预览模式使用 colors.ts 的内置快照';
+          return;
+        }
+
+        try {
+          const { colorTokens } = await import('../../src/theme/colors.ts');
+          applyColorTokens(colorTokens);
+          colorTokenSource.innerHTML =
+            '实时读取 <span class="token-source">src/theme/colors.ts</span>';
+        } catch (error) {
+          colorTokenSource.textContent =
+            '未能读取 colors.ts，已使用内置颜色快照';
+        }
+      }
+
+      async function initializePage() {
+        await synchronizeColorTokens();
+        await initializePreview();
+      }
+
+      function showLoadError() {
+        status.dataset.kind = 'error';
+        status.textContent = 'IconPark CDN 脚本加载失败';
+        grid.innerHTML =
+          '<div class="empty-state">' +
+          '请检查网络、CDN 地址或项目的 CSP 设置。' +
+          '</div>';
+      }
+
+      bundleScript.addEventListener('error', showLoadError);
+      searchInput.addEventListener('input', renderIcons);
+      colorTokenSelect.addEventListener('change', () => {
+        const selectedOption = colorTokenSelect.selectedOptions[0];
+        if (selectedOption?.dataset.color) {
+          previewColor = selectedOption.dataset.color;
+          colorInput.value = previewColor.slice(0, 7);
+        }
+        renderIcons();
+      });
+      colorInput.addEventListener('input', () => {
+        previewColor = colorInput.value.toUpperCase();
+        const matchingOption = [...colorTokenSelect.options].find(
+          (option) =>
+            option.dataset.color?.toLowerCase() ===
+            colorInput.value.toLowerCase(),
+        );
+        colorTokenSelect.value = matchingOption?.value ?? '__custom__';
+        renderIcons();
+      });
+      sizeInput.addEventListener('input', () => {
+        sizeValue.textContent = sizeInput.value;
+        for (const icon of grid.querySelectorAll('iconpark-icon')) {
+          icon.setAttribute('size', sizeInput.value);
+        }
+      });
+
+      window.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+  </body>
+</html>

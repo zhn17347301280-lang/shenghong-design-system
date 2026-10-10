@@ -1,0 +1,8 @@
+interface:
+  display_name: "盛虹原型构建"
+  short_description: "严格使用盛虹组件库创建、修改并审查企业产品原型"
+  brand_color: "#6495F6"
+  default_prompt: "使用 $shenghong-prototype-builder 基于盛虹组件库创建或审查当前原型，并完成自动校验。"
+
+policy:
+  allow_implicit_invocation: true

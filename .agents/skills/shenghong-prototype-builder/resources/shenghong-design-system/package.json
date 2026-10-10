@@ -1,0 +1,25 @@
+{
+  "name": "@shenghong/design-system",
+  "version": "0.1.0-portable.2",
+  "private": true,
+  "type": "module",
+  "main": "./dist-lib/shenghong-design-system.cjs",
+  "module": "./dist-lib/shenghong-design-system.js",
+  "types": "./dist-lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist-lib/types/index.d.ts",
+      "import": "./dist-lib/shenghong-design-system.js",
+      "require": "./dist-lib/shenghong-design-system.cjs"
+    },
+    "./style.css": "./dist-lib/style.css",
+    "./icons/*": "./icons/*"
+  },
+  "files": ["dist-lib", "icons", "component-catalog.md"],
+  "peerDependencies": {
+    "@ant-design/x": "^2.9.0",
+    "antd": "6.6.3",
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
+  }
+}
