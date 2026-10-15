@@ -7,7 +7,7 @@
 
 | MasterGo 页面 | 本地组件 | 状态 |
 | --- | --- | --- |
-| Button按钮 | `AppButton` | 已实现类型、danger、状态与图标组合的统一入口 |
+| Button按钮 | `AppButton` | 五种类型、三档尺寸、禁用/加载/危险、图标位置、形状、幽灵/通栏，以及操作/导航/表单语义；展示页分六类覆盖 |
 | Login登陆 | `LoginPanel` | 已实现密码/验证码、错误、加载及辅助操作 |
 | Form Item表单项 | `AppFormItem` | 已实现上下/左右布局，以及只读、可编辑、编辑中、开关、错误状态 |
 | Card卡片 | `MetricCard`、`ReportCard`、`EntityCard`、`OptionCard` | 已实现指标卡、报告卡、本体卡、卡片选项及交互状态 |
@@ -164,3 +164,43 @@ export function Prototype() {
 ```
 
 本地构建：`npm run build:lib`。生成的 `dist-lib/` 可以被本地原型项目通过文件依赖引用。
+
+### Button 按钮配置与使用规范
+
+`AppButton` 透传 antd 6.6.3 的 `ButtonProps`。以下维度相互独立，展示页的分组不是新的公共组件。
+
+| 维度 | 配置 | 选择原则 |
+| --- | --- | --- |
+| 尺寸 | `size="large" / "medium" / "small"` | 高度 40 / 32 / 24px，默认 medium；同一区域保持一致。表格标准操作列沿用 32px。 |
+| 操作层级 | `type="primary" / "default" / "dashed" / "text" / "link"` | 主要 / 次要 / 添加 / 辅助 / 导航；同一区域最多一个主按钮。 |
+| 状态 | `disabled`、`loading` | 禁用说明不可操作的原因；加载中表示等待异步完成并阻止重复触发。Hover、Active、Focus 由真实交互触发。 |
+| 危险语义 | `danger` | 与 type 独立组合，用于删除、撤销授权等；确认流程由业务结合弹窗实现。 |
+| 内容 | `children`、`icon`、`iconPlacement="start" / "end"` | 图标默认前置；纯图标必须有 `aria-label`，建议同时提供 Tooltip 或 title。 |
+| 形状 | `shape="default" / "circle" / "round"` | 圆角矩形 / 圆形纯图标 / 胶囊形。 |
+| 背景 | `ghost` | 透明背景，适合深色或图片背景；展示页用深色底检查对比。 |
+| 宽度 | `block` | 默认随内容变化；block 撑满父容器。 |
+| 行为 | `onClick`、`href`、`htmlType` | 操作用 onClick，导航用 href，表单提交用 htmlType="submit"；type 只控制外观。 |
+| 进阶变体 | `color` + `variant` | 支持 solid / outlined / filled / dashed / text / link；优先使用基础 type，避免混用两套配置与无必要的多色扩展。 |
+
+```tsx
+<AppButton type="primary" size="medium" loading={saving} htmlType="submit">保存</AppButton>
+<AppButton icon={<LocalIcon svg={downloadIconSvg} />} aria-label="下载报告" title="下载报告" />
+<AppButton type="link" href="/reports">查看报告</AppButton>
+```
+
+参考：[Ant Design Button](https://ant.design/components/button-cn/)。通用组件 → Button 的六个页签提供尺寸切换、状态对照、模拟异步保存、键盘操作与链接跳转示例。
+
+### 展示页标题规范
+
+通用组件展示页统一使用 `CatalogHeading`：类型名使用 14px、600 字重的正文色，补充说明使用 12px 灰字，放在标题下方。标题与说明间距 4px。
+
+- 类型名简短明确，例如“主要按钮”“无图标”“图片”。
+- 一看就懂的类型只显示标题，不重复解释。
+- 需要说明用途或操作时，补充一句短说明；不在展示说明中堆叠属性名、尺寸参数或实现细节。
+- 类型标题与组件实际内容分开；表单字段名、弹窗内容标题等继续遵循所属组件规范。
+
+### 文件上传演示
+
+通用组件 → File → 上传演示支持选择或拖入一个本地文件（最大 50 MB）。选取后显示文件名、大小，并复用 `FileTypeIcon` 的扩展名映射，覆盖 Word、Excel、PDF、图片、音视频等格式；未知格式使用通用文件图标。进度在约 4.5 秒内从 0% 走到 100%，可取消或重新选择。超限文件提示重新上传。文件只在本地用于演示，不向服务器发送；原有状态对照示例保留。
+
+`FileUploadStatus` 新增可选的 `showProgressInfo`、`successText`、`successHint`，以便普通文件上传使用百分比及完成文案；默认保留原有导入场景的展示。

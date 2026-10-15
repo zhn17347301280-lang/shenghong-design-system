@@ -1,3 +1,4 @@
+import { CatalogHeading } from './CatalogHeading';
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import closeIconSvg from '../icons/svg/通用-取消、关闭.svg?raw';
 import {
@@ -75,7 +76,7 @@ function SectionExample({ variant, content }: { variant: SectionVariant; content
 
 function ControlGroup<T extends string>({ title, value, options, onChange }: { title: string; value: T; options: Array<{ value: T; label: string }>; onChange: (value: T) => void }) {
   return <div className="sh-drawer-showcase__control-group">
-    <span className="sh-drawer-showcase__control-title">{title}</span>
+    <CatalogHeading title={title} />
     <div className="sh-drawer-showcase__control-buttons">{options.map((option) => <AppButton className="sh-drawer-showcase__control-button" key={option.value} type={value === option.value ? 'primary' : 'default'} aria-pressed={value === option.value} onClick={() => onChange(option.value)}>{option.label}</AppButton>)}</div>
   </div>;
 }
@@ -94,7 +95,7 @@ export function DrawerShowcase() {
   return <div className="sh-drawer-showcase">
     <div className="sh-drawer-showcase__lab">
       <div className="sh-drawer-showcase__stage">
-        <span className="sh-drawer-showcase__stage-label">组合预览 · {widthVariant === 'standard' ? '600px 标准抽屉' : '400px 紧凑抽屉'}</span>
+        <CatalogHeading title="抽屉预览" description={widthVariant === 'standard' ? '600px 标准宽度' : '400px 紧凑宽度'} />
         <div className="sh-drawer-showcase__preview" style={{ '--sh-drawer-preview-width': widthVariant === 'standard' ? '600px' : '400px' } as CSSProperties}>
           <div className="sh-drawer-showcase__preview-header"><DrawerTitle title="抽屉标题" status={status} /><span className="sh-drawer-showcase__preview-close" aria-hidden="true"><LocalIcon svg={closeIconSvg} size={20} /></span></div>
           <div className={`sh-drawer-showcase__preview-body${subtle ? ' sh-drawer-showcase__preview-body--subtle' : ''}`}>{section}</div>

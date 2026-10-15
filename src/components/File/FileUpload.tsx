@@ -2,7 +2,9 @@ import type { ReactNode } from 'react';
 import { Button, Flex, Progress, Typography, Upload, type UploadProps } from 'antd';
 import { CheckCircleFilled, WarningFilled } from '@ant-design/icons';
 import { FileTypeIcon, getFileTypeIcon } from './FileTypeIcon';
+import { LocalIcon } from '../Icon/LocalIcon';
 import uploadIcon from '../../icons/svg/上传2.svg?raw';
+import genericFileIcon from '../../icons/svg/通用-文件、附件.svg?raw';
 
 const { Dragger } = Upload;
 const { Text, Link } = Typography;
@@ -32,6 +34,8 @@ export interface FileUploadStatusProps {
   fileName?: string;
   /** 上传进度 0-100，仅 uploading 生效。 */
   percent?: number;
+  /** 是否显示上传百分比。 */
+  showProgressInfo?: boolean;
   /** 上传失败时的错误文案。 */
   errorText?: ReactNode;
   /** 上传中的主提示文案。 */
@@ -46,6 +50,10 @@ export interface FileUploadStatusProps {
   unit?: ReactNode;
   /** 结果态描述文案。 */
   resultHint?: ReactNode;
+  /** 上传成功后的说明，默认保留成员导入场景文案。 */
+  successHint?: ReactNode;
+  /** 成功态标题；未传入时保留默认导入统计。 */
+  successText?: ReactNode;
   /** 点击「重新上传」的回调，仅 error 生效。 */
   onRetry?: () => void;
   /** 结果态描述里「下载错误报告」的回调。 */
@@ -56,7 +64,7 @@ function StateIcon({ state, fileName }: { state: FileUploadState; fileName?: str
   if (state === 'success') return <CheckCircleFilled className="sh-file-upload-status__icon sh-file-upload-status__icon--success" />;
   if (state === 'partial') return <WarningFilled className="sh-file-upload-status__icon sh-file-upload-status__icon--warning" />;
   if (fileName && getFileTypeIcon(fileName)) return <FileTypeIcon name={fileName} size={36} />;
-  return <FileTypeIcon name="default.xlsx" size={36} />;
+  return <LocalIcon svg={genericFileIcon} size={36} />;
 }
 
 /**
@@ -67,6 +75,7 @@ export function FileUploadStatus({
   state = 'idle',
   fileName = '成员信息.xlsx',
   percent = 50,
+  showProgressInfo = false,
   errorText = '上传失败：网络异常，请稍后重试',
   uploadingText = '成员信息导入中，请稍候...',
   uploadingHint = '请勿关闭当前页面，否则将导致任务中断。',
@@ -74,6 +83,8 @@ export function FileUploadStatus({
   failCount = 12,
   unit = '个成员',
   resultHint = '您可下载错误报告，修改后重新上传',
+  successHint = '全部成员导入完成',
+  successText,
   onRetry,
   onDownloadReport,
 }: FileUploadStatusProps) {
@@ -85,7 +96,7 @@ export function FileUploadStatus({
         {state === 'uploading' && (
           <>
             <div className="sh-file-upload-status__title">{uploadingText}</div>
-            <Progress className="sh-file-upload-status__progress" percent={percent} showInfo={false} strokeColor="#6495F6" />
+            <Progress className="sh-file-upload-status__progress" percent={percent} showInfo={showProgressInfo} status="active" strokeColor="#6495F6" />
             <Text type="secondary" className="sh-file-upload-status__desc">{uploadingHint}</Text>
           </>
         )}
@@ -100,9 +111,9 @@ export function FileUploadStatus({
         {state === 'success' && (
           <>
             <div className="sh-file-upload-status__title">
-              导入结果：导入成功 <strong className="is-success">{successCount}</strong> {unit}
+              {successText ?? <>导入结果：导入成功 <strong className="is-success">{successCount}</strong> {unit}</>}
             </div>
-            <Text type="secondary" className="sh-file-upload-status__desc">全部成员导入完成</Text>
+            <Text type="secondary" className="sh-file-upload-status__desc">{successHint}</Text>
           </>
         )}
 

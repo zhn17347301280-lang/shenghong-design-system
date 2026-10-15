@@ -1,3 +1,4 @@
+import { CatalogHeading } from './CatalogHeading';
 import { useState } from 'react';
 import { Flex, Tabs, Typography } from 'antd';
 import { AppButton, EntityCard, LocalIcon, MetricCard, OptionCard, ReportCard, StatusTag } from '../index';
@@ -6,7 +7,7 @@ import hintIconSvg from '../icons/svg/通用-问号提示.svg?raw';
 import downloadIconSvg from '../icons/svg/通用-下载.svg?raw';
 import entityIconSvg from '../icons/svg/企业智能平台-OntoForge-企业、本体.svg?raw';
 
-const { Paragraph, Text, Title } = Typography;
+const { Text } = Typography;
 
 const states: Array<{ label: string; status: MetricCardStatus }> = [
   { label: '普通', status: 'normal' },
@@ -54,7 +55,7 @@ export function CardShowcase() {
 
   const metricPanel = (
     <section className="card-showcase__group">
-      <div className="card-showcase__heading"><strong>指标卡</strong><span>数量、数据状态与涨跌方向分层控制；正常状态可点击选中</span></div>
+      <CatalogHeading title="指标卡" description="切换数量、状态和涨跌方向；点击卡片可选中。" />
       <div className="metric-card-showcase">
         <article className="metric-card-showcase__preview">
           <Text className="metric-card-showcase__label">交互预览 · {metricCount} 个指标 · {statusLabel} · {isUp ? '上涨' : '下跌'}</Text>
@@ -75,8 +76,7 @@ export function CardShowcase() {
 
         <aside className="metric-card-showcase__controls" aria-label="指标卡状态控制">
           <div>
-            <Title level={4}>状态控制</Title>
-            <Paragraph type="secondary">按层级选择卡片结构、数据状态和涨跌方向。</Paragraph>
+            <CatalogHeading title="状态切换" description="选择数量、状态和涨跌方向。" />
           </div>
           <div className="metric-card-showcase__control-group">
             <Text strong>1. 指标数量</Text>
@@ -107,7 +107,7 @@ export function CardShowcase() {
 
   const reportPanel = (
     <section className="card-showcase__group">
-      <div className="card-showcase__heading"><strong>报告卡片</strong><span>NEW 与标签组合为四种状态；点击卡片切换选中，Hover 为更浅的描边</span></div>
+      <CatalogHeading title="报告卡片" description="切换 NEW 和标签；点击卡片可选中。" />
       <div className="metric-card-showcase report-card-showcase">
         <article className="metric-card-showcase__preview">
           <Text className="metric-card-showcase__label">交互预览 · {reportIsNew ? 'NEW' : '无 NEW'} · {reportHasTag ? '有标签' : '无标签'} · {reportSelected ? '选中' : '未选中'}</Text>
@@ -115,8 +115,7 @@ export function CardShowcase() {
         </article>
         <aside className="metric-card-showcase__controls" aria-label="报告卡片状态控制">
           <div>
-            <Title level={4}>状态控制</Title>
-            <Paragraph type="secondary">默认显示 NEW + 有标签，通过两层按钮组合四种状态；直接点击左侧卡片可在未选中 / 选中之间切换。</Paragraph>
+            <CatalogHeading title="状态切换" description="选择是否显示 NEW 和标签。" />
           </div>
           <div className="metric-card-showcase__control-group">
             <Text strong>1. NEW 状态</Text>
@@ -139,14 +138,14 @@ export function CardShowcase() {
 
   const entityPanel = (
     <section className="card-showcase__group">
-      <div className="card-showcase__heading"><strong>本体卡片</strong><span>273 × 140，24px 内边距，浅灰渐变填充</span></div>
+      <CatalogHeading title="本体卡片" />
       <EntityCard icon={<LocalIcon svg={entityIconSvg} size={16} />} />
     </section>
   );
 
   const optionPanel = (
     <section className="card-showcase__group">
-      <div className="card-showcase__heading"><strong>卡片选项</strong><span>点击卡片切换选中态，交互一致、仅状态描边不同</span></div>
+      <CatalogHeading title="卡片选项" description="点击卡片可切换选中状态。" />
       <div className="card-showcase__option-list">
         <OptionCard
           title="经营报告"

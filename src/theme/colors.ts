@@ -75,6 +75,8 @@ export const colorTokens = {
   colorTextDescription: '#00000073',
   colorTextPlaceholder: '#00000040',
   colorTextDisabled: '#00000040',
+  // 深色背景上的禁用内容（例如幽灵按钮），避免黑色禁用文字不可见。
+  colorTextDisabledInverse: '#ffffff73',
   colorIcon: '#00000073',
   colorIconHover: '#000000e0',
 

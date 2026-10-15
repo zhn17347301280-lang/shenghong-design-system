@@ -3,7 +3,7 @@
 > Generated from `src/components/index.ts`. Do not edit by hand.
 
 - Package: `@shenghong/design-system`
-- Generated: 2026-10-10T05:28:14.215Z
+- Generated: 2026-10-15T02:23:46.609Z
 - Public modules: 64
 
 | Category | Public module | Exported symbols | Source |

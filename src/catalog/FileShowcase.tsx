@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Flex, Tabs } from 'antd';
+import { CatalogHeading } from './CatalogHeading';
+import { UploadDemo } from './UploadDemo';
 import {
   AppButton,
   ChatFileCard,
@@ -72,7 +74,7 @@ function InputFileCards() {
   return (
     <Flex vertical gap={20} className="sh-file-showcase__panel">
       <div>
-        <div className="sh-file-showcase__caption">文件类型（hover 卡片显示删除按钮）</div>
+        <CatalogHeading title="文件" description="鼠标移到卡片上可查看删除按钮。" />
         <div className="sh-input-box-demo">
           {fileStates.map((s) => (
             <InputFileCard
@@ -87,7 +89,7 @@ function InputFileCards() {
       </div>
 
       <div>
-        <div className="sh-file-showcase__caption">图片类型</div>
+        <CatalogHeading title="图片" />
         <div className="sh-input-box-demo">
           <InputFileCard kind="image" src={demoThumb} alt="演示图片" status="normal" />
           <InputFileCard kind="image" src={demoThumb} alt="演示图片" status="uploading" percent={45} />
@@ -134,6 +136,7 @@ export function FileShowcase() {
     <div className="sh-file-showcase">
       <Tabs
         items={[
+          { key: 'demo', label: '上传演示', children: <UploadDemo /> },
           { key: 'page', label: '页面文件上传', children: <PageFileUpload /> },
           { key: 'conversation', label: '对话文件卡片', children: <ConversationFileCards /> },
           { key: 'input', label: '输入框文件卡片', children: <InputFileCards /> },

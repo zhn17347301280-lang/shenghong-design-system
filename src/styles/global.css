@@ -54,6 +54,23 @@ body {
 }
 .docs-shell--enterprise { width: min(1740px, 100%); }
 
+/* 通用组件共用 Card 的白底、边框、圆角与内边距。 */
+.catalog-frame { min-width: 0; }
+.upload-demo__filename { overflow-wrap: anywhere; }
+.catalog-heading { display: grid; gap: 4px; margin-bottom: 8px; }
+.catalog-heading__title { margin: 0; color: var(--app-color-text, rgba(0, 0, 0, 0.88)); font-size: 14px; font-weight: 600; line-height: 22px; }
+.catalog-heading__description { margin: 0; color: var(--sh-color-text-description); font-size: 12px; line-height: 20px; }
+
+/* Button 展示页仅负责布局，按钮的视觉和交互状态由主题与 AppButton 负责。 */
+.button-showcase__example { min-width: 0; }
+.button-showcase__example > .ant-typography { margin-bottom: 8px; }
+.button-showcase__types { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 600px) { .button-showcase__types { grid-template-columns: 1fr; } }
+.button-showcase__matrix { display: grid; width: 100%; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
+.button-showcase__matrix > div { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.button-showcase__ghost { width: 100%; }
+.button-showcase__block { display: flex; flex-direction: column; width: 320px; max-width: 100%; gap: 8px; }
+
 .docs-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
 .docs-hero h1.ant-typography { margin-bottom: 4px; }
 .docs-hero p.ant-typography { margin-bottom: 0; }
@@ -77,9 +94,7 @@ body {
 .sh-table-showcase__toolbar-switch { display: flex; align-items: center; gap: 8px; }
 .sh-table-showcase__toolbar-switch > span { color: var(--sh-color-text-description); font-size: 12px; }
 .sh-table-showcase__cell-types { margin-top: 24px; }
-.sh-table-showcase__cell-types h4 { margin: 0 0 8px; color: rgba(0, 0, 0, .88); font-size: 16px; line-height: 24px; }
 .sh-table-showcase__fixed-test { margin-top: 24px; }
-.sh-table-showcase__fixed-test h4 { margin: 0 0 8px; color: rgba(0, 0, 0, .88); font-size: 16px; line-height: 24px; }
 @media (max-width: 640px) {
   .catalog-status-guide { grid-template-columns: 1fr; }
   .sh-table-showcase > .ant-tabs > .ant-tabs-nav { flex-wrap: wrap; }
@@ -187,9 +202,6 @@ body {
 .card-type-tabs > .ant-tabs-nav::before { border-bottom-color: var(--sh-color-border-secondary); }
 .card-type-tabs .ant-tabs-tab { padding-block: 10px; }
 .card-showcase__group { display: grid; min-width: 0; gap: 14px; }
-.card-showcase__heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--sh-color-border-secondary); }
-.card-showcase__heading strong { color: #242425; font-size: 16px; line-height: 24px; }
-.card-showcase__heading span { color: var(--sh-color-text-description); font-size: 12px; }
 .metric-card-showcase { display: grid; grid-template-columns: minmax(0, 395px) minmax(280px, 360px); align-items: start; gap: 24px; }
 .metric-card-showcase__preview { display: grid; min-height: 270px; align-content: start; gap: 10px; }
 .metric-card-showcase__label { font-weight: 500; }
@@ -201,7 +213,8 @@ body {
 .report-card-showcase .metric-card-showcase__controls { min-height: 270px; }
 .card-showcase__option-list { display: flex; flex-wrap: wrap; gap: 16px; }
 .modal-showcase { display: grid; grid-template-columns: minmax(0, 600px) minmax(280px, 360px); align-items: start; gap: 24px; }
-.modal-showcase__preview, .modal-showcase__controls { min-height: 230px; padding: 20px; background: #fff; border: 1px solid var(--sh-color-border-secondary); border-radius: 12px; }
+.modal-showcase__preview, .modal-showcase__controls { min-height: 230px; padding: 20px; background: #fff; border-radius: 12px; }
+.modal-showcase__controls { border: 1px solid var(--sh-color-border-secondary); }
 .modal-showcase__preview { display: flex; align-items: flex-start; flex-direction: column; gap: 16px; }
 .modal-showcase__preview-heading h4.ant-typography { margin: 4px 0; }
 .modal-showcase__preview-heading p.ant-typography { margin: 0; }
@@ -239,6 +252,5 @@ body {
   .token-grid, .radius-grid, .shadow-grid { grid-template-columns: 1fr; }
   .icon-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .catalog-tabs > .ant-tabs-nav { overflow: hidden; }
-  .card-showcase__heading { align-items: flex-start; flex-direction: column; gap: 2px; }
   .sh-report-card.ant-card, .sh-metric-card[data-count='2'] { max-width: 100%; }
 }

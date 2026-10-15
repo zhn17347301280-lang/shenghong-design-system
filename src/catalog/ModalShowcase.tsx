@@ -1,3 +1,4 @@
+import { CatalogHeading } from './CatalogHeading';
 import { useState, type ReactNode } from 'react';
 import { Checkbox, Radio, Space, Typography } from 'antd';
 import { AppButton, AppFormItem, AppInput, AppModal, AppSelect, AppTextArea, DetailFieldGroup, LocalIcon, ModalItemCard, RankingContent, ResourcePickerContent } from '../index';
@@ -5,7 +6,7 @@ import botIconSvg from '../icons/svg/企业智能平台-用量管理-智能问�
 import knowledgeIconSvg from '../icons/svg/企业智能平台-用量管理-知识问答.svg?raw';
 import analysisIconSvg from '../icons/svg/数据报告-数据分析.svg?raw';
 
-const { Paragraph, Text, Title } = Typography;
+const { Text, Title } = Typography;
 
 type ModalCategory = 'readonly' | 'editable' | 'items' | 'composite';
 type ItemMode = 'select' | 'action';
@@ -139,9 +140,7 @@ export function ModalShowcase() {
     <div className="modal-showcase">
       <article className="modal-showcase__preview">
         <div className="modal-showcase__preview-heading">
-          <Text className="modal-showcase__eyebrow">卡片预览</Text>
-          <Title level={4}>{currentLabel}</Title>
-          <Paragraph type="secondary">{current.description}</Paragraph>
+          <CatalogHeading title={currentLabel} description={current.description} />
         </div>
         <div className="modal-showcase__preview-card" data-category={category} data-composite={category === 'composite' ? compositeMode : undefined}>
           {(category !== 'composite' || compositeMode === 'ranking') && <strong className="modal-showcase__preview-title">{titles[category]}</strong>}
@@ -152,8 +151,7 @@ export function ModalShowcase() {
 
       <aside className="modal-showcase__controls" aria-label="弹窗类型控制">
         <div>
-          <Title level={4}>类型控制</Title>
-          <Paragraph type="secondary">切换类别后，使用左侧唯一入口打开对应弹窗。</Paragraph>
+          <CatalogHeading title="类型切换" description="选择内容类型，点击左侧按钮打开弹窗。" />
         </div>
         <div className="modal-showcase__control-group">
           <Text strong>1. 内容类别</Text>

@@ -1,5 +1,6 @@
+import { CatalogHeading } from './CatalogHeading';
 import { useRef, useState, type Key, type ReactNode } from 'react';
-import { Space, Tabs, Typography } from 'antd';
+import { Space, Tabs } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { AppButton, CellText, DataTable, InlineEditableTable, LocalIcon, StatusTag, TableActionCell, TableCellContent, type InlineEditableTableHandle, type TableActionItem } from '../index';
 import addIconSvg from '../icons/svg/通用-添加.svg?raw';
@@ -7,7 +8,6 @@ import importIconSvg from '../icons/svg/企业智能平台-组织与权限-成�
 import fileIconSvg from '../icons/svg/通用-文件、附件.svg?raw';
 import downloadIconSvg from '../icons/svg/通用-下载.svg?raw';
 
-const { Paragraph } = Typography;
 
 /* ----------------------------- 单元格类型速查 ----------------------------- */
 
@@ -90,10 +90,7 @@ const cellSpecColumns: ColumnsType<CellSpecRow> = [
 function CellTypesPanel() {
   return (
     <>
-      <Paragraph type="secondary" style={{ marginTop: 0 }}>
-        单元格按「槽位组合」与「纯文字语义」两层区分：外层是 icon / text / tag 三个可缺省槽位（6 种组合）；
-        纯文字时再用 textType 区分普通、跳转、失效。所有图标统一使用组件库自有 LocalIcon。下表逐行列出全部形态（该表演示「不可选择」表格，无复选框列）。
-      </Paragraph>
+      <CatalogHeading title="单元格类型" description="对比文字、图标和标签的组合，以及普通、跳转和禁用状态。" />
       <DataTable<CellSpecRow>
         columns={cellSpecColumns}
         dataSource={cellSpecRows}
@@ -175,9 +172,7 @@ function EditableTablePanel({ toolbarVariant }: { toolbarVariant: ToolbarVariant
   const tableRef = useRef<InlineEditableTableHandle>(null);
   return (
     <>
-      <Paragraph type="secondary" style={{ marginTop: 0 }}>
-        数据单元格直接编辑。点击「检查必填」显示红框和单元格下方提示；补齐内容后错误实时消失，行高保持一致。
-      </Paragraph>
+      <CatalogHeading title="行内编辑" description="直接修改单元格；点击“检查必填”查看未填写的内容。" />
       <Space style={{ marginBottom: 16 }}>
         <AppButton onClick={() => tableRef.current?.validate()}>检查必填</AppButton>
         <AppButton onClick={() => tableRef.current?.clearValidation()}>清除报错</AppButton>
@@ -198,9 +193,7 @@ function StandardTablePanel({ toolbarVariant }: { toolbarVariant: ToolbarVariant
   const selection = useRowSelection();
   return (
     <>
-      <Paragraph type="secondary" style={{ marginTop: 0 }}>
-        数据展示表格用于浏览、筛选和批量选择数据；右上角按钮只切换工具栏布局，不改变表格类型。
-      </Paragraph>
+      <CatalogHeading title="数据展示" description="浏览、搜索和选择数据；右上角可切换工具栏样式。" />
       <DataTable<MemberRecord>
         toolbarVariant={toolbarVariant}
         title={toolbarVariant === 'titled' ? '成员列表（1000）' : undefined}
@@ -227,8 +220,7 @@ function StandardTablePanel({ toolbarVariant }: { toolbarVariant: ToolbarVariant
         pagination={paginationConfig}
       />
       <section className="sh-table-showcase__fixed-test">
-        <h4>固定操作列 · 横向滚动状态检查</h4>
-        <Paragraph type="secondary">下方预览宽度限制为 760px。横向滚动并悬停、选中行时，右侧操作列必须盖住下方单元格内容。</Paragraph>
+        <CatalogHeading title="固定操作列" description="横向滚动表格，右侧操作列始终保持可见。" />
         <div style={{ maxWidth: 760 }}>
           <DataTable<MemberRecord>
             columns={memberColumns}
@@ -244,7 +236,6 @@ function StandardTablePanel({ toolbarVariant }: { toolbarVariant: ToolbarVariant
         </div>
       </section>
       <section className="sh-table-showcase__cell-types">
-        <h4>单元格类型速查</h4>
         <CellTypesPanel />
       </section>
     </>

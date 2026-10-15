@@ -1,6 +1,7 @@
 import { Flex, Space, Tabs } from 'antd';
 import { FieldTypeTag, LocalIcon, StatusTag, type StatusTagTone } from '../index';
 import shareIconSvg from '../icons/svg/通用-分享.svg?raw';
+import { CatalogHeading } from './CatalogHeading';
 
 const tones: { tone: StatusTagTone; label: string }[] = [
   { tone: 'info', label: '标签' },
@@ -14,7 +15,7 @@ function BasicTags() {
   return (
     <Flex vertical gap={16} className="sh-tag-showcase__panel">
       <div>
-        <div className="sh-file-showcase__caption">无图标</div>
+        <CatalogHeading title="无图标" />
         <Space wrap size={[8, 8]}>
           {tones.map((t) => (
             <StatusTag key={`plain-${t.tone}`} tone={t.tone}>{t.label}</StatusTag>
@@ -22,7 +23,7 @@ function BasicTags() {
         </Space>
       </div>
       <div>
-        <div className="sh-file-showcase__caption">有图标</div>
+        <CatalogHeading title="有图标" />
         <Space wrap size={[8, 8]}>
           {tones.map((t) => (
             <StatusTag key={`icon-${t.tone}`} tone={t.tone} leadingIcon={<LocalIcon svg={shareIconSvg} size={12} />}>公开访问</StatusTag>

@@ -1,9 +1,10 @@
+import { CatalogHeading } from './CatalogHeading';
 import { useState } from 'react';
 import { Flex, Typography } from 'antd';
 import { AppButton, LocalIcon, LoginPanel, type LoginMethod, type LoginStage, type LoginValues } from '../index';
 import refreshIconSvg from '../icons/svg/通用-刷新.svg?raw';
 
-const { Paragraph, Text, Title } = Typography;
+const { Text } = Typography;
 
 const stageNames: Record<LoginStage, string> = {
   'before-input': '默认登录',
@@ -112,7 +113,7 @@ export function LoginShowcase() {
   return (
     <div className="login-showcase login-showcase--interactive">
       <article className="login-showcase__item">
-        <Text className="login-showcase__label">交互预览 · {stageNames[stage]}</Text>
+        <CatalogHeading title={stageNames[stage]} />
         <LoginPanel
           method={method}
           stage={stage}
@@ -128,8 +129,7 @@ export function LoginShowcase() {
 
       <aside className="login-showcase__controls" aria-label="登录组件状态控制">
         <div>
-          <Title level={4}>状态控制</Title>
-          <Paragraph type="secondary">先选择登录流程，下方仅显示该流程可进入的异常状态；登录方式切换、找回密码和返回也可直接操作左侧卡片。</Paragraph>
+          <CatalogHeading title="状态切换" description="选择登录方式，再切换正常或异常状态。" />
         </div>
 
         <div className="login-showcase__control-group">

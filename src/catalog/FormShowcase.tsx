@@ -1,8 +1,9 @@
+import { CatalogHeading } from './CatalogHeading';
 import { useState, type ReactNode } from 'react';
 import { Checkbox, Flex, Radio, Segmented, Space, Tag, Typography } from 'antd';
 import { AppButton, AppFormItem, AppInput, AppSelect, AppSwitch, AppTextArea } from '../index';
 
-const { Paragraph, Text, Title } = Typography;
+const { Text } = Typography;
 
 type FormLayout = 'vertical' | 'horizontal';
 type FieldKind =
@@ -240,9 +241,7 @@ export function FormShowcase() {
     <div className="form-showcase">
       <div className="form-showcase__stage">
         <article className="form-showcase__preview">
-          <Text className="form-showcase__eyebrow">
-            交互预览 · {layoutLabel} · {kindConfig.label} · {formLabel}{isError ? ' · 错误' : ''}
-          </Text>
+          <CatalogHeading title={kindConfig.label} description={`${layoutLabel} · ${formLabel}${isError ? ' · 错误' : ''}`} />
           <div className="form-showcase__preview-card" key={`${layout}-${kind}-${form}`}>
             <FieldPreview kind={kind} form={form} error={isError} layout={layout} />
           </div>
@@ -251,8 +250,7 @@ export function FormShowcase() {
 
         <aside className="form-showcase__controls" aria-label="Form Item 类型控制">
           <div>
-            <Title level={4}>类型控制</Title>
-            <Paragraph type="secondary">字段种类、内容形式与校验状态彼此独立：同一种内容可在可编辑 / 仅可读 / 可读可编辑三种形式间切换，错误态可作用于任意可编辑字段。</Paragraph>
+            <CatalogHeading title="类型切换" description="选择布局、字段和编辑方式，再查看错误状态。" />
           </div>
 
           <div className="form-showcase__control-group">

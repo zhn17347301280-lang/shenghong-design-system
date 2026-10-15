@@ -89,12 +89,12 @@ export function ChartShowcase() {
       <Card size="small">
         <Space wrap size={[16, 12]}>
           <span>
-            <Text type="secondary" style={{ marginRight: 8 }}>图表类别</Text>
+            <Text strong style={{ marginRight: 8 }}>图表类别</Text>
             <Segmented options={TYPE_OPTIONS} value={type} onChange={(value) => setType(value as ChartType)} />
           </span>
           {(isDonut || type === 'funnel' || type === 'horizontalBar') && (
             <span>
-              <Text type="secondary" style={{ marginRight: 8 }}>多色模式</Text>
+              <Text strong style={{ marginRight: 8 }}>多色模式</Text>
               <AppSwitch checked={categorical} onChange={setCategorical} />
             </span>
           )}

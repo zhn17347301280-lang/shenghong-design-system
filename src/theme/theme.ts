@@ -37,6 +37,8 @@ export const appTheme: ThemeConfig = {
     Button: {
       borderRadius: radiusTokens.radiusMD,
       controlHeight: 32,
+      controlHeightLG: 40,
+      controlHeightSM: 24,
       paddingInline: 15,
     },
     Card: {
